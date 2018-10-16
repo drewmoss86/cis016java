@@ -11,11 +11,13 @@
 package bulgarian_solitare;
 import java.util.*;
 import java.io.*;
+import java.lang.Object;
 public class BulgarianSolitaire 
 {
 	//create an ArrayList object representing the cards and ideal cards set utilizing ArrayList library
-	ArrayList<Integer> cards = new ArrayList<Integer>();
-	ArrayList<Integer> idealCards = new ArrayList<Integer>();
+	private ArrayList<Integer> cards = new ArrayList<Integer>();
+	private ArrayList<Integer> idealCards = new ArrayList<Integer>();
+	private int cardPiles = 0;
 
 	//create Random object to help generate random numbers between 0-46
 	Random randValue = new Random();
@@ -49,16 +51,34 @@ public class BulgarianSolitaire
 	//setIdeal : is a void function that takes an ArrayList object and sets an ArrayList with the ideal cards. Returns nothing.
 	public void setIdeal(ArrayList<Integer> a)
 	{
+
+		Scanner input = new Scanner(System.in);
+		System.out.print("Please enter the number of piles: ");
+		cardPiles = input.nextInt();
+		
 		//create dynamic array
 		a = new ArrayList<Integer>();
 		
 		//create array of ideal cards for comparison
-		for(int i = 1; i < 10; i++)
+		for(int i = 1; i < cardPiles + 1; i++)
 		{
 			a.add(i);
 		}
 		
 		idealCards = a;		
+		
+		input.close();
+	}
+	
+	public int totalCardsCalc(int cP)
+	{
+		int sum = 0;
+		while(cP > 0)
+		{
+			sum += (cP--);
+		}
+
+		return sum;
 	}
 	
 	//initGame : is a void function that takes an ArrayList object and initializes the game
@@ -68,14 +88,14 @@ public class BulgarianSolitaire
 		a = new ArrayList<Integer>();
 
 		int sum = 0;          //INT variable holding the values that have been deducted from the totalCards
-		int totalCards = 45;  //INT variable representing total number of cards being used
+//		int totalCards = 45;  //INT variable representing total number of cards being used
 		
 		//create array of ideal cards for comparison
-		for(int i = 0; i < totalCards; i++)
+		for(int i = 0; i < totalCardsCalc(cardPiles); i++)
 		{
 			//adds random value between 0 (inclusive) and 46 (exclusive) minus total that has already been accounted for	
 			//once it reaches 0, the remaining elements will hold 0
-			a.add(randValue.nextInt((totalCards+1)-sum));
+			a.add(randValue.nextInt((totalCardsCalc(cardPiles)+1)-sum));
 			sum += a.get(i);
 			
 		}
@@ -140,11 +160,12 @@ public class BulgarianSolitaire
 	}
 	
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
 		
-		//Create a BulgarianSolitaire object to run one Bulgarian Solitare game;
+		//Create a BulgarianSolitaire object to run one Bulgarian Solitaire game;
 		BulgarianSolitaire game = new BulgarianSolitaire();
 	}
 		
